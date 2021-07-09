@@ -1,6 +1,6 @@
 # Differentiable Self-Organizing Systems
 
-ALIFE 2021 Tutorial, July 20, 10:00-12:00 (CET)
+[ALIFE 2021](https://www.robot100.cz/alife2021) Tutorial, July 20, 10:00-12:00 (CET)
 
 <script src="twgl-full.min.js"></script>
 <script type="module" src="ca.js"></script>
