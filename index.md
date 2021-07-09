@@ -13,17 +13,32 @@ canvas {
 <canvas id=canvas width="512" height="256"></canvas>
 
 
-**Organisers:**
+**Organizers:**
 [Alexander Mordvintsev](https://znah.net/),
 [Ettore Randazzo](https://oteret.github.io/),
 [Eyvind Niklasson](https://eyvind.me/)
 
 **Keywords:** self-organization, differentiable programming, cellular automata, reaction-diffusion
 
-In this workshop we are doing the cover the basic principles of using
-differentiable programming for building self-organising systems, i.e. systems
-that consist of a large number of agents, executing the same rule, that can
-reach shared global goals through local asynchronous communication.
+In this tutorial we are doing the cover the basic principles of using
+differentiable programming for building self-organizing systems, i.e. systems
+that consist of a large number of agents that reach global goals through local
+interactions. We are going to:
+
+* create a new tiny Neural Cellular Automata (NCA) model from scratch (588 params!)
+* train this model to generate textures and solve some other tasks
+* explore [Neural Reaction-Diffusion](https://selforglive.github.io/alife_rd_textures/)
+* implement NCA with GLSL shaders and see what can we learn from 
+* export resulting models as GLSL shaders
+
+### Supplementary materials
+
+* [Thread: Differentiable Self-organizing Systems at distill.pub](https://distill.pub/2020/selforg/)
+* [Self-Organizing Neural Cellular Automata in 4 minutes  (video)](https://youtu.be/unF2CVkMIiE)
+* [Hexells interactive web demo](https://znah.net/hexells)
+
+
+
 
 <script type="module">
     import {CA} from "./ca.js"
