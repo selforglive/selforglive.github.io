@@ -5,10 +5,17 @@ ALIFE 2021 Tutorial, July 20, 10:00-12:00 (CET)
 <script src="twgl-full.min.js"></script>
 <script type="module" src="ca.js"></script>
 
+<style>
+canvas {
+    width: 100%;
+}
+</style>
 <canvas id=canvas width="512" height="256"></canvas>
 
 
-**Organisers:** [Alexander Mordvintsev](https://znah.net/), [Ettore Randazzo](https://oteret.github.io/)
+**Organisers:**
+[Alexander Mordvintsev](https://znah.net/),
+[Ettore Randazzo](https://oteret.github.io/),
 [Eyvind Niklasson](https://eyvind.me/)
 
 **Keywords:** self-organization, differentiable programming, cellular automata, reaction-diffusion
