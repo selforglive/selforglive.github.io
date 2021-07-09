@@ -28,8 +28,9 @@ interactions. We are going to:
 * create a new tiny Neural Cellular Automata (NCA) model from scratch (588 params!)
 * train this model to generate textures and solve some other tasks
 * explore [Neural Reaction-Diffusion](https://selforglive.github.io/alife_rd_textures/)
-* implement NCA with GLSL shaders and see what can we learn from 
-* export resulting models as GLSL shaders
+* implement NCA with GLSL shaders and see what can we learn from them
+* speculate about potential physical implementations of NCAs
+* discuss future research directions in Differentiable Self-Organization
 
 ### Supplementary materials
 
