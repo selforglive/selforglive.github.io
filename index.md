@@ -61,7 +61,7 @@ reach shared global goals through local asynchronous communication.
         for(let i=0; i<stepPerFrame; ++i) {
             ca.step();
         }
-        stepPerFrame -= 0.05;
+        stepPerFrame -= 0.025;
         twgl.bindFramebufferInfo(gl);
         ca.render();
         requestAnimationFrame(render);
