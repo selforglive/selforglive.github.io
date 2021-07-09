@@ -1,13 +1,11 @@
+# Differentiable Self-Organizing Systems
+
+ALIFE 2021 Tutorial, July 20, 10:00-12:00 (CET)
 
 <script src="twgl-full.min.js"></script>
 <script type="module" src="ca.js"></script>
 
 <canvas id=canvas width="512" height="256"></canvas>
-
-
-# Differentiable Self-Organizing Systems
-
-ALIFE 2021 Tutorial, July 20, 10:00-12:00 (CET)
 
 
 **Organisers:** [Alexander Mordvintsev](https://znah.net/), [Ettore Randazzo](https://oteret.github.io/)
