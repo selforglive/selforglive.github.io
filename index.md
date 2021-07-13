@@ -20,7 +20,7 @@ canvas {
 
 **Keywords:** self-organization, differentiable programming, cellular automata, reaction-diffusion
 
-In this tutorial we are doing the cover the basic principles of using
+In this tutorial we are going to cover the basic principles of using
 differentiable programming for building self-organizing systems, i.e. systems
 that consist of a large number of agents that reach global goals through local
 interactions. We are going to:
