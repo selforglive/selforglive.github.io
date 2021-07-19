@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RD</title>
+<script src="twgl.min.js"></script>
+
+<style>
+    body {background: #000; color:#aaa}
+    canvas {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+
+<canvas width="1024" height="512" id="canvas"></canvas>
+<pre>
+    SPACE - pause, A/Z - speed
+</pre>
+
+<script>
+    tgl = {
+        bindFramebufferInfo: (gl, fbi)=>{
+            const fb = fbi ? fbi.framebuffer : null;
+            const {width, height}  = fbi ? fbi : gl.canvas;
+            gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+            gl.viewport(0, 0, width, height);
+        },
+    };
+
+
+    const canvas = document.getElementById('canvas');
+    const gl = canvas.getContext('webgl');
+    gl.getExtension('OES_texture_float')
+
+    const minVP = "\nattribute vec4 position; varying vec2 uv; void main() {uv=position.xy*0.5+0.5; gl_Position = position;}";
+
+    const shared = `
+    precision highp float;
+    uniform sampler2D state;
+    uniform vec2 step;
+    uniform vec2 fk;
+    uniform vec2 mousePos;
+    uniform mat3 stateMtx;
+    uniform float frame;
+    `
+
+    const rdProg = twgl.createProgramInfo(gl, [minVP, shared+`
+    uniform bool reset;
+    varying vec2 uv;
+
+    vec4 hash43(vec3 p)
+    {
+        vec4 p4 = fract(vec4(p.xyzx)  * vec4(.1031, .1030, .0973, .1099));
+        p4 += dot(p4, p4.wzxy+33.33);
+        return fract((p4.xxyz+p4.yzzw)*p4.zywx);
+    }
+
+    vec2 read(float dx, float dy) {
+        vec2 p = uv+vec2(dx, dy)*step;
+        return texture2D(state, p).xy;
+    }
+
+    void main() {
+        if (reset) {
+            float r = length(uv*2.0-1.0);
+            float v = exp(-100.0*r*r)*0.7;
+            gl_FragColor = vec4(0.7, v, 0.0, 0.0);
+            return;
+        }
+
+        vec2 center = read(0.0, 0.0);
+        vec2 corn = (read(-1.0, -1.0)+read(1.0, -1.0)+read(-1.0, 1.0)+read(1.0, 1.0));
+        vec2 side = (read(-1.0, 0.0)+read(1.0, 0.0)+read(0.0,-1.0)+read(0.0,1.0));
+        vec2 blur = center/4.0 + side/8.0 + corn/16.0;
+        vec2 v = mix(center, blur, vec2(1.0, 0.5));
+
+        float r = v.x*v.y*v.y;
+        v += vec2(-r+fk.x*(1.0-v.x), r-(fk.x+fk.y)*v.y);
+
+        v += (hash43(vec3(uv/step, frame)).xy-0.5)*0.0005;
+
+        gl_FragColor = vec4(v, blur-center);
+    }`]);
+
+    const visProg = twgl.createProgramInfo(gl, [minVP, shared+`
+    varying vec2 uv;
+
+    void main() {
+        vec4 data = texture2D(state, uv);
+        vec2 v  = data.xy;
+        vec2 p = (stateMtx*vec3(v, 1.0)).xy;
+        vec3 color = vec3(v.y);
+        if (length(p-mousePos) < 0.05) {
+            color = vec3(1.0, 0.5, 0.5);
+        }
+        gl_FragColor = vec4(color, 1.0);
+    }`]); 
+
+    const pointsProg = twgl.createProgramInfo(gl, [shared+`
+    attribute vec4 position;
+    varying vec3 color;
+    void main() {
+        float f = fk.x, k = fk.y;
+        vec4 data = texture2D(state, position.xy);
+        vec2 v = data.xy;
+        v = (stateMtx*vec3(v, 1.0)).xy;
+        color = vec3(0.3);
+        if (length(v-mousePos) < 0.05) {
+            color = vec3(1.0, 0.01, 0.01);
+        }
+        gl_Position = vec4(v*2.0-1.0, 0.0, 1.0);
+        gl_PointSize = 2.0;
+    }
+    `, `
+    precision highp float;
+    varying vec3 color;
+    void main() {
+        gl_FragColor = vec4(color, 1.0);
+    }`]);
+
+    const size = 256;
+    let [src, dst] = [0, 1].map(
+        ()=>twgl.createFramebufferInfo(gl, [{ type: gl.FLOAT, minMag: gl.NEAREST, wrap: gl.REPEAT }], size, size ));
+
+    const quad = twgl.createBufferInfoFromArrays(gl, {
+        position: [-1, -1, 0, 1, -1, 0, -1, 1, 0, -1, 1, 0, 1, -1, 0, 1, 1, 0],
+    });
+
+    const pos = []
+    for (let y=0.5/size; y<1.0; y += 1.0/size)
+    for (let x=0.5/size; x<1.0; x += 1.0/size) {
+        pos.push(x, y);
+    }
+    const points = twgl.createBufferInfoFromArrays(gl, {
+        position: {numComponents: 2, data:pos},
+    });
+    
+
+    let fk = [0.055, 0.062];
+    //let fk = [0.050, 0.060];
+    //let fk = [0.082, 0.060];
+    //let fk = [0.026, 0.051];
+    //let fk = [0.03, 0.063];
+
+    const uniforms = {
+        fk: fk,
+        step: [1.0/size, 1.0/size],
+        mousePos: [-100, -100],
+        stateMtx:[4.0, 0, 0,
+                  6.0, 2, 0,
+                 -3.0, 0, 1],
+        state: src.attachments[0],
+    };
+
+    canvas.addEventListener('mousemove', e=>{
+        const h = canvas.height;
+        uniforms.mousePos = [e.offsetX/h-1.0, 1.0-e.offsetY/h];
+    });
+
+    function setProgram(program, geom, uniforms) {
+        gl.useProgram(program.program);
+        twgl.setBuffersAndAttributes(gl, program, geom);
+        twgl.setUniforms(program, uniforms);
+    }
+
+    let frame = 0;
+    function step(reset) {
+        tgl.bindFramebufferInfo(gl, dst);
+        uniforms.frame = frame++;
+        setProgram(rdProg, quad, {reset, ...uniforms});
+        twgl.drawBufferInfo(gl, quad);
+        [src, dst] = [dst, src];     
+        uniforms.state = src.attachments[0];  
+    }
+
+    step(true);
+
+    let paused = false;
+    let speed = 1;
+
+    document.addEventListener('keydown', e=>{
+        if (e.keyCode == 32) { //space
+            e.preventDefault();
+            paused = !paused;
+        } else if (e.code == 'KeyA') {
+            speed = Math.min(speed*2, 16);
+        } else if (e.code == 'KeyZ') {
+            speed = Math.max(speed/2, 1);
+        }
+    });
+
+    function render(time) {
+        twgl.resizeCanvasToDisplaySize(gl.canvas);
+        if (!paused) {
+            for (let i=0; i<speed; ++i) {
+                step(false);
+            }
+        }
+
+        tgl.bindFramebufferInfo(gl);
+        gl.viewport(0, 0, gl.canvas.width/2, gl.canvas.height);
+        setProgram(visProg, quad, uniforms);
+        twgl.drawBufferInfo(gl, quad);
+
+        gl.viewport(gl.canvas.width/2, 0, gl.canvas.width/2, gl.canvas.height);
+        setProgram(pointsProg, points, uniforms);
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.ONE, gl.ONE);
+        twgl.drawBufferInfo(gl, points, gl.POINTS);
+        gl.disable(gl.BLEND);
+
+        requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+
+
+</script>
