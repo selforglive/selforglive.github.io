@@ -32,7 +32,12 @@ interactions. We are going to:
 * speculate about potential physical implementations of NCAs
 * discuss future research directions in Differentiable Self-Organization
 
-### Supplementary materials
+### Tutorial materials
+
+* [Colab notebook](https://colab.research.google.com/notebook#fileId=https://github.com/selforglive/selforglive.github.io/blob/main/alife21_tutorial/alife_nca_tutorial.ipynb)
+* [Shadertoy shader](https://www.shadertoy.com/view/fd2XRV)
+
+### Supplementary links
 
 * [Thread: Differentiable Self-organizing Systems at distill.pub](https://distill.pub/2020/selforg/)
 * [Self-Organizing Neural Cellular Automata in 4 minutes  (video)](https://youtu.be/unF2CVkMIiE)
