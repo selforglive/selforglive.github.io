@@ -34,8 +34,10 @@ interactions. We are going to:
 
 ### Tutorial materials
 
+* [Video recording](https://youtu.be/RjXC9ZiXJbg)
 * [Colab notebook](https://colab.research.google.com/notebook#fileId=https://github.com/selforglive/selforglive.github.io/blob/main/alife21_tutorial/alife_nca_tutorial.ipynb)
 * [Shadertoy shader](https://www.shadertoy.com/view/fd2XRV)
+* [TF.js Gradient toys at Observable](https://observablehq.com/@znah/gradient-toys-with-tf-js)
 
 ### Supplementary links
 
