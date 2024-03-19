@@ -1,4 +1,4 @@
-# Differentiable Self-Organizing Systems
+# JAX for Scaling Up Artificial Life
 
 [ALIFE 2024](https://2024.alife.org/) Tutorial
 
