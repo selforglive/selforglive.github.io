@@ -4,7 +4,7 @@
 
 
 **Organizers:**
-[Alexander Mordvintsev](https://znah.net/),
+[Alexander Mordvintsev](https://znah.net/)
 
 **Keywords:** webgl, webgpu, gpu, shaders, particle systems, self-organization, cellular automata
 
