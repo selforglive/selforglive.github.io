@@ -12,8 +12,10 @@ canvas {
 
 ### Tutorials
 
-* [Differentiable Self-Organising Systems (ALIFE2021)](./alife21_tutorial/)
 * [JAX for Scaling Up Artificial Life (ALIFE2024)](./jax_alife24/)
+* [SwissGL/GPU: tiny libraries for tiny and beautiful programs on the web (ALIFE2024)](./swissgl_alife24)
+* [Differentiable Self-Organising Systems (ALIFE2021)](./alife21_tutorial/)
+
 
 
 ### Owners
