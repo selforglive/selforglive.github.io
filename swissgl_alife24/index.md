@@ -1,3 +1,6 @@
+<script src="swissgl.js"></script>
+<canvas id="c" width="600" height="600"></canvas>
+
 # SwissGL/GPU: tiny libraries for tiny and beautiful programs on the web
 
 [ALIFE 2024](https://2024.alife.org/) Tutorial
@@ -19,3 +22,63 @@ TBD
 ### Supplementary materials
 
 * [SwissGL](https://google.github.io/swissgl/)
+
+<script>
+    "use strict";
+    const canvas = document.getElementById('c');
+    const glsl = SwissGL(canvas);
+
+    const step_n = 10;
+    const params = {viewR:12.0, s2: [1.,4.,8.]};
+    
+    let state;
+    function reset() {
+        state = glsl({seed:123,
+            FP:`(hash(ivec3(I, int(seed))).xy-0.5)*12.0,0,0`},
+            {size:[20, 20], story:3, format:'rgba32f', tag:'state'});
+    }
+    reset();
+
+    window.addEventListener('keydown', e=>{
+        reset();
+    })
+    
+    function step() {
+        glsl({...params, past:state[1], FP:`
+            vec3 pos = Src(I).xyz, field=vec3(0);
+            mat3 grad = mat3(0);
+            for (int y=0; y<ViewSize.y; ++y)
+            for (int x=0; x<ViewSize.x; ++x) {
+                vec3 dp = pos - Src(ivec2(x, y)).xyz;
+                float r = length(dp);
+                dp /= r+1e-8;
+                vec3 f=exp(-r*r*s2), f_dr=-2.0*r*f*s2;
+                field += f;
+                grad += outerProduct(dp, f_dr);
+            }
+            const vec3 target = vec3(10.0,5.0,0.0);
+            const vec3 w = vec3(0.5,1,1);
+            vec3 dp = (field-target);
+            //float E = dot(dp,dp*w);
+            vec3 de = 2.0*dp*w;
+            vec3 force = -grad*de;
+            FOut.xyz = pos+force*0.01; 
+        `},  state); 
+    }
+
+    function render(t) {
+        for (let i=0; i<step_n; ++i) step();
+        glsl({state:state[0], Grid: state[0].size, 
+            Blend:'s+d', Aspect:'mean', ...params,
+            VP:`(state(ID.xy).xy + XY*2.0)/viewR,0,1`, FP:`
+            float r = 2.0*length(XY);
+            FOut = vec4(exp(-r*r*s2)*s2*0.05, 1.0);`});        
+        glsl({state:state[0], Grid: state[0].size, ...params,
+            Blend:'d*(1-sa)+s*sa', Aspect:'mean',
+            VP:`vec4 s = state(ID.xy);
+            VPos = vec4((s.xy + XY*0.2)/viewR,0,1);`,
+            FP:`smoothstep(1.0,0.2,length(XY))`});             
+        requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+</script>
