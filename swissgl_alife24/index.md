@@ -1,7 +1,8 @@
 <script src="swissgl.js"></script>
-<canvas id="c" width="600" height="600"></canvas>
 
 # SwissGL/GPU: tiny libraries for tiny and beautiful programs on the web
+
+<canvas id="c" width="600" height="600"></canvas>
 
 [ALIFE 2024](https://2024.alife.org/) Tutorial
 
