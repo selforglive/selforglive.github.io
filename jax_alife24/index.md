@@ -16,7 +16,7 @@ Afterwards, we will show two practical examples of ALife research where we used 
 2. Biomaker CA is a framework that allows us to simulate Cellular Automata-based plant biomes. Plants are organisms composed by multiple CA cells, with each organism having their unique DNA. Plants reproduce with variation within the environment. Thanks to JAX parallelization, we can perform seamless meta-evolution such that our plants maximize a given goal. We will show parts of its implementation, how we render environments and how to perform different kinds of experiments. We will finally show how to implement new functionalities in Biomaker CA.
 
 ### Tutorial materials
-* JAX for ALife colab
+* [JAX for ALife colab](https://colab.research.google.com/github/selforglive/selforglive.github.io/blob/main/jax_alife24/jax_for_alife_tutorial_2024.ipynb)
 * Lenia colab
 * [Biomaker CA slide deck](https://docs.google.com/presentation/d/1NCxSnXPi1AwjL8RYfzpBTeVwjL83Dj5EOW7EqOb5U70/edit?usp=sharing)
 * [Biomaker CA colab: create a world with rain](https://colab.research.google.com/github/google-research/self-organising-systems/blob/master/self_organising_systems/biomakerca/examples/notebooks/run_rain_configuration.ipynb)
