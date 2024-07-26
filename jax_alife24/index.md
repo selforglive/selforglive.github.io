@@ -17,7 +17,8 @@ Afterwards, we will show two practical examples of ALife research where we used 
 
 ### Tutorial materials
 * [JAX for ALife colab](https://colab.research.google.com/github/selforglive/selforglive.github.io/blob/main/jax_alife24/jax_for_alife_tutorial_2024.ipynb)
-* Lenia colab
+* [Lenia in JAX colab](https://bit.ly/LeniaJAX)
+* [Lenia with EvoJAX colab](https://bit.ly/LeniaEvoJAX)
 * [Biomaker CA slide deck](https://docs.google.com/presentation/d/1NCxSnXPi1AwjL8RYfzpBTeVwjL83Dj5EOW7EqOb5U70/edit?usp=sharing)
 * [Biomaker CA colab: create a world with rain](https://colab.research.google.com/github/google-research/self-organising-systems/blob/master/self_organising_systems/biomakerca/examples/notebooks/run_rain_configuration.ipynb)
 
